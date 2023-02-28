@@ -56,3 +56,8 @@ Producer может отправлять дупликаты в Kafka из за �
 + ```max.in.flight.requests.per.connection = 1``` (Kafka 0.11)
 + ```max.in.flight.requests.per.connection = 5``` (Kafka >= 1.0) - higher performance and keep ordering [KAFKA-5494]
 + ```acks = all```
+```
+Since Kafka 3.0 Kafka Producer is SAFE by default. (acks = all & enable.idempotence = true)
+With Kafka 2.8 and lower the Kafka Producer comes with acks = 1 and enable.idempotence = false, 
+its recommended to use SAFE Producer and change these settings
+```
