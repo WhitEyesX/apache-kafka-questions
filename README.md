@@ -3,8 +3,8 @@
 # Kafka Producer
 + [Базовая конфигурация Kafka Producer](#Базовая-конфигурация-kafka-producer)
 + [Producer Acknowledgement](#Producer-acknowledgement-(acks))
-+ [Acks = all & min.insync.replicas](#Acks-=-all-&-min.insync.replicas)
-+ [Kafka Topic Availability (Рассматриваем replication factor = 3)](#Kafka-topic-availability-(рассматриваем-replication-factor-=-3))
++ [Acks = all & min.insync.replicas](#acks--all--mininsyncreplicas)
++ [Kafka Topic Availability (Рассматриваем replication factor = 3)](#kafka-topic-availability-рассматриваем-replication-factor--3)
 + [Producer Retries](#Producer-retries)
 + [Producer Timeouts](#Producer-timeouts)
 + [Idempotent Producer](#Idempotent-producer)
