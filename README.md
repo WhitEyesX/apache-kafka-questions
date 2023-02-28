@@ -4,9 +4,10 @@
 + [Базовая конфигурация Kafka Producer](#Базовая-конфигурация-kafka-producer)
 + [Producer Acknowledgement](#Producer-acknowledgement-(acks))
 + [Acks = all & min.insync.replicas](#Acks-=-all-&-min.insync.replicas)
-+ [Producer Acknowledgement](#Producer-acknowledgement-(acks))
-+ [Producer Acknowledgement](#Producer-acknowledgement-(acks))
-+ [Producer Acknowledgement](#Producer-acknowledgement-(acks))
++ [Kafka Topic Availability (Рассматриваем replication factor = 3)](#Kafka-topic-availability-(рассматриваем-replication-factor-=-3))
++ [Producer Retries](#Producer-retries)
++ [Producer Timeouts](#Producer-timeouts)
++ [Idempotent Producer](#Idempotent-producer)
 
 ## Базовая конфигурация Kafka Producer
 + bootstrap server
@@ -24,7 +25,7 @@
 + ```min.insync.replicas = 2```: По крайней мере broker-leader
 Если параметер ```min.insync.replicas = 2``` и мы отправляем данные в Kafka, то в случае отсутсвия двух работоспособных brokers Kafka вернет ошибку ```NOT_ENOUGH_REPLICAS```
 
-## Kafka Topic Availability (Рассматриваем ```replication factor = 3```)
+## Kafka Topic Availability (Рассматриваем replication factor = 3)
 + ```acks = 0``` & ```acks = 1```: если есть хотябы один работоспособный брокер, то topic доступен для записи.
 + ```acks = all```
   + ```min.insync.replicas = 1 (default)```: если есть хотябы один работоспособный брокер, то мы можем допустить отказ двух брокеров
