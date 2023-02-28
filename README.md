@@ -2,7 +2,11 @@
 
 # Kafka Producer
 + [Базовая конфигурация Kafka Producer](#Базовая-конфигурация-kafka-producer)
-+ [Базовая конфигурация Kafka Producer](##Базовая конфигурация Kafka Producer)
++ [Producer Acknowledgement](#Producer-acknowledgement-(acks))
++ [Acks = all & min.insync.replicas](#Acks-=-all-&-min.insync.replicas)
++ [Producer Acknowledgement](#Producer-acknowledgement-(acks))
++ [Producer Acknowledgement](#Producer-acknowledgement-(acks))
++ [Producer Acknowledgement](#Producer-acknowledgement-(acks))
 
 ## Базовая конфигурация Kafka Producer
 + bootstrap server
