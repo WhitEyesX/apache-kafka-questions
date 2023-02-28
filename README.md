@@ -52,7 +52,7 @@ Producer может отправлять дупликаты в Kafka из за �
 + Это настройка включена by default для Kafka >= 3.0
 
 Эта настройка также устанавливает(если они не заданы вручную) такие параметры как:
-+ retries = Integer.MAX_VALUE
++ ```retries = Integer.MAX_VALUE```
 + ```max.in.flight.requests.per.connection = 1``` (Kafka 0.11)
 + ```max.in.flight.requests.per.connection = 5``` (Kafka >= 1.0) - higher performance and keep ordering [KAFKA-5494]
 + ```acks = all```
