@@ -68,3 +68,44 @@ Since Kafka 3.0 Kafka Producer is SAFE by default. (acks = all & enable.idempote
 With Kafka 2.8 and lower the Kafka Producer comes with acks = 1 and enable.idempotence = false, 
 its recommended to use SAFE Producer and change these settings
 ```
+
+## Message Compression at the Producer level
+Producer обычно посылает данные в текстовом формате, в этом случае важно применять компрессию на producer'e.
+Compression может быть включена уровне Producer и не требует изменения конфигурации брокеров или consumer'ов.
++ ```compression.type = none(default)|gzip|lz4|snappy|zstd```
+Compression наиболее эффективна с большими batch of messages. 
+
+Advantage:
++ Producer делает запросы с более емким размером
++ Передача через сеть происходит быстрее, т.е. и задержка будет меньше
++ Пропускная способность увеличивается
++ Диск лучше утилизируется (Сохраненные сообщения в Kafka становятся меньше)
+
+Disadvantage:
++ Producers будут требовать больше CPU cycles, для compression
++ Consumers в свое время также будут требовать больше CPU cycles, но уже для decompression
+
+В общем лучше всего тестить каждый тип compression для достижения speed/compression ratio. Рассматривать варианты настройки ```linger.ms``` и ```batch.size``` для получения больших batches и вследствии большей пропускной способности и компрессии
+
+## Message Compression at the Broker/Topic level
+```compression.type = producer```(default), broker получает уже compressed batch от producer и записывает его в исходном виде в topic log ffile без decompression.
+```compression.type = lz4``` (for example)
++ Если тип compression совпадает с настройкой в producer, то данные будут записываться на диск в таком же виде в котором они пришли
++ Если тип compression различается, то на уровне broker происходит decompression и compression в формат указаный в настройке указанной на broker/topic level
+
+Брокер также в этом случае займет некоторые CPU cycles 
+
+## Batching in producer
+By default, Kafka producers отправляют records как можно раньше (мнгновенно)
++ ```max.in.flight.requests.per.connection = 5``` message batches могут отправляться в одно время (orig: up to 5 message batches being in flight at most)
++ После этого Kafka is smart и начнет паковать сообщения в batch до следуюшей отправки. Это помогает увеличить пропускную способность, при этом поддерживая низкую задержку.
+
+Две настройки влияющие на batching mechanism
++ ```linger.ms``` (default = 0): как долго ждать, до того как отправить следующий batch. (задержка для формирования batch)
++ ```batch.size``` (default to 16KB): если batch заполнился, он сразу отправляется
+
+```
+Batch формируется `per partition'. Average batch size можно узнать с помощью Kafka Producer Metrics.
+```
+
+## Partitioners
