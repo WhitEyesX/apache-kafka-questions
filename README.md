@@ -1,5 +1,3 @@
-# apache-kafka-questions
-
 # Kafka Producer
 + [Базовая конфигурация Kafka Producer](#Базовая-конфигурация-kafka-producer)
 + [Producer Acknowledgement](#Producer-acknowledgement-(acks))
