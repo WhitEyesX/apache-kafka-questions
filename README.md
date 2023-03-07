@@ -8,6 +8,8 @@
 + [Producer Retries](#Producer-retries)
 + [Producer Timeouts](#Producer-timeouts)
 + [Idempotent Producer](#Idempotent-producer)
++ [Paritioners](#Partitioners)
++ [buffer.memory & max.block.ms](#max.block.ms-and-buffer.memory)
 
 ## Базовая конфигурация Kafka Producer
 + bootstrap server
@@ -109,3 +111,38 @@ Batch формируется `per partition'. Average batch size можно уз
 ```
 
 ## Partitioners
+### Producer Default Partitioner when key != null
++ Key Hashing is the process of determining the mapping of a key to a partition
++ In the default Kafka partitioner, the keys are hashed using the ```murmur2 algorithm``` 
+
+```
+targetPartition = Math.abs(Utils.murmur2(keyBytes)) % (numPartitions - 1)
+```
++ This means that the same key will go to the same partition, but if we adding partitions to a topic will completely alter the formula (```break the guarantee```)
++ Its most likely preferred to not override the behavior of the partitioner, but it is possible to do using partitioner.class
+
+### Producer Default Partitioner when key = null
+
+#### RoundRobin Partitioner (Default for Kafka <= 2.3)
+Every record will be sends to next partition
++ This results in more batches (one batch per partition) and smaller batches (imagine with 100 partitions)
++ Smaller bathes lead to more requests as well as higher latency
+
+#### Sticky Partitioner (Default for Kafka >= 2.4)
++ It would be better to have all the records sent to a single partition and not multiple partitions to imrove batching
++ We ```stick``` until the batch is full or ```linger.ms``` has elapsed
++ After sending the batch, the partition that is sticky changes
++ Larger batches and reduced latency (because larger requests, and ```batch.size``` more likely to be reached)
+
+## max.block.ms and buffer.memory (Advanced - rarely used)
+If the Producer faster than the broker can take, the records will be buffered in memory (on your Producer)
++ ```buffer.memory=33554432 (32MB)```: the size of the send buffer
++ That buffer will fill up over time and empty back down then the throughout to the broker increases
+
+If the buffer is full (all 32MB), the the .send() method will start to block (won't return right away)
++ ```max.block.ms=60000```: the time .send() will block until throwing and exception.
+Exceptions are thrown when:
+  + The Producer has filled up its buffer
+  + The broker is not accepting any new data
+  + 60 seconds has elapsed
+If you hit an exception hit that usually means your brokers are down or overloaded as they can't respond to requests
