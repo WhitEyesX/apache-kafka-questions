@@ -9,7 +9,7 @@
 + [Producer Timeouts](#Producer-timeouts)
 + [Idempotent Producer](#Idempotent-producer)
 + [Paritioners](#Partitioners)
-+ [buffer.memory & max.block.ms](#max.block.ms-and-buffer.memory)
++ [buffer.memory & max.block.ms](#maxblockms-and-buffermemory-advanced---rarely-used)
 
 ## Базовая конфигурация Kafka Producer
 + bootstrap server
